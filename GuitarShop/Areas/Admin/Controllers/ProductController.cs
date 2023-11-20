@@ -91,12 +91,20 @@ namespace GuitarShop.Areas.Admin.Controllers
                 if (product.ProductID == 0)           // new product
                 {
                     context.Products.Add(product);
+                    context.SaveChanges();
+
+                    // Add a message to TempData for a new product
+                    TempData["UserMessage"] = $"You just added the product {product.Name}";
                 }
                 else                                  // existing product
                 {
                     context.Products.Update(product);
+                    context.SaveChanges();
+
+                    // Add a message to TempData for an updated product
+                    TempData["UserMessage"] = $"You just updated the product {product.Name}";
                 }
-                context.SaveChanges();
+
                 return RedirectToAction("List");
             }
             else
@@ -106,6 +114,7 @@ namespace GuitarShop.Areas.Admin.Controllers
                 return View("AddUpdate", product);
             }
         }
+
 
         [HttpGet]
         public IActionResult Delete(int id)
